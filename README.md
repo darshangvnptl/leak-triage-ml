@@ -64,6 +64,42 @@ Human review (early on) / CI gate (once validated)
         └──> real triage decisions feed back in as future training data
 ```
 
+```
+leak-triage-ml/
+├── .github/
+│   └── workflows/
+│       ├── ci.yml              # lint + unit tests, runs on every PR
+│       ├── release.yml         # package scorer+model, publish on merge to main
+│       └── retrain.yml         # MLOps job: retrain, canary check, opens PR
+│
+├── src/
+│   ├── features.py             # feature extraction (shared by train + score)
+│   ├── train.py                # trains the classifier
+│   └── score.py                # scores real gitleaks JSON output
+│
+├── data/
+│   ├── synthetic/               # generator + starter synthetic dataset
+│   ├── raw/                     # real triage exports — gitignored, sensitive
+│   └── canary/                  # held-out known-secret set, blocks bad retrains
+│
+├── models/
+│   ├── current/                  # model currently live
+│   └── candidates/               # new models awaiting review (from retrain PRs)
+│
+├── tests/
+│   ├── test_features.py
+│   ├── test_train.py
+│   └── test_score.py
+│
+├── examples/
+│   └── sample_gitleaks_report.json
+│
+├── requirements.txt
+├── .gitignore                   # excludes data/raw/, *.joblib if not versioned via LFS
+├── README.md
+└── LICENSE
+```
+
 ## Pipeline
 
 ```mermaid
@@ -125,6 +161,28 @@ Mitigations to build in from the start, not bolt on later:
   auto-suppression, until precision is validated against real outcomes.
 - Flag near-duplicate feature vectors with conflicting labels for a second
   reviewer before they enter training data.
+
+## What we're building, in one sentence: 
+A second-opinion filter that sits after Gitleaks, using signals Gitleaks can't see, to tell you which of its findings are probably real secrets vs. noise.
+
+## Why it's needed: 
+Gitleaks decides "secret or not" using regex + one fixed entropy cutoff. That's blunt — it can't factor in where a string was found or what it looks like structurally. So it flags real secrets correctly, but also flags test fixtures, hashes, UUIDs, and placeholders as if they were equally dangerous. You end up manually sifting through noise every scan.
+
+## What we're actually building, concretely — three pieces:
+
+features.py — turns each Gitleaks finding into numbers a model can learn from: entropy, file-path context, string shape (hash/UUID/base64 patterns), and readability (dictionary words vs. random bytes). This is what we're starting now.
+train.py — feeds a bunch of labelled examples (real secret vs. false positive) through those features into a gradient-boosted classifier, which learns the combinations that separate the two — not just entropy alone.
+score.py — takes a real Gitleaks JSON report, runs each finding through the trained model, and outputs a re-ranked list: "these 3 are almost certainly real secrets, these 12 are probably noise."
+
+## The three-phase plan we agreed on:
+
+**Phase 1 (now)**: build the pipeline above, no security hardening yet.
+
+**Phase 2**: deliberately attack it — poison the training labels and show the model can be fooled into ignoring a real secret shape.
+
+**Phase 3**: build defenses against that attack (canary checks, review gates).
+
+What this is not: it doesn't replace Gitleaks, and it doesn't auto-delete findings — it re-prioritizes them so a human reviews the 3 likely-real ones first instead of all 15.
 
 ## Roadmap
 
