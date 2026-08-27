@@ -8,7 +8,7 @@
   {"RuleID": "generic-api-key", "File": "docs/examples/quickstart.md", "StartLine": 8,
    "Secret": "your_api_key_here", "Match": "export API_KEY=your_api_key_here"},
   {"RuleID": "github-pat", "File": ".github/workflows/deploy.yml", "StartLine": 27,
-   "Secret": "ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nO", "Match": "GITHUB_TOKEN: ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nO"},
+   "Secret": "ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nOp", "Match": "GITHUB_TOKEN: ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nOp"},
   {"RuleID": "stripe-live-key", "File": "app/settings/prod.py", "StartLine": 5,
    "Secret": "sk_live_QwErTy9uIoP8aSdFgHjKl0Zx", "Match": "STRIPE_SECRET_KEY = \"sk_live_QwErTy9uIoP8aSdFgHjKl0Zx\""},
   {"RuleID": "generic-high-entropy-string", "File": "spec/support/fixtures.rb", "StartLine": 19,

@@ -10,7 +10,7 @@ Usage:
 import argparse
 import sys
 import os
-
+import threadpoolctl
 import pandas as pd
 import joblib
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -47,7 +47,8 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)
 
     clf = HistGradientBoostingClassifier(max_iter=150, learning_rate=0.1, max_depth=4, random_state=42)
-    clf.fit(X_train, y_train)
+    with threadpoolctl.threadpool_limits(limits=1):
+        clf.fit(X_train, y_train)
 
     y_pred = clf.predict(X_test)
     print("=== Classification report ===")

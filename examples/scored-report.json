@@ -18,15 +18,6 @@
     "ml_verdict": "likely_secret"
   },
   {
-    "RuleID": "github-pat",
-    "File": ".github/workflows/deploy.yml",
-    "StartLine": 27,
-    "Secret": "ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nO",
-    "Match": "GITHUB_TOKEN: ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nO",
-    "ml_probability": 0.9999,
-    "ml_verdict": "likely_secret"
-  },
-  {
     "RuleID": "generic-api-key",
     "File": "src/test/java/AuthTest.java",
     "StartLine": 44,
@@ -50,6 +41,15 @@
     "StartLine": 8,
     "Secret": "your_api_key_here",
     "Match": "export API_KEY=your_api_key_here",
+    "ml_probability": 0.0,
+    "ml_verdict": "likely_false_positive"
+  },
+  {
+    "RuleID": "github-pat",
+    "File": ".github/workflows/deploy.yml",
+    "StartLine": 27,
+    "Secret": "ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nOp",
+    "Match": "GITHUB_TOKEN: ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nOp",
     "ml_probability": 0.0,
     "ml_verdict": "likely_false_positive"
   },

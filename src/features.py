@@ -64,12 +64,26 @@ PLACEHOLDER_KEYWORDS = [
     "fixme", "lorem", "ipsum", "foobar",
 ]
 
+COMMON_ENGLISH_WORDS = {
+    "the", "and", "for", "are", "but", "not", "you", "your", "this", "that",
+    "with", "have", "from", "they", "will", "would", "there", "their",
+    "what", "about", "which", "when", "make", "like", "time", "just",
+    "know", "take", "into", "year", "some", "could", "them", "than",
+    "then", "now", "only", "come", "over", "think", "also", "back",
+    "after", "use", "two", "how", "our", "work", "first", "well", "way",
+    "even", "new", "want", "because", "any", "these", "give", "day",
+    "most", "key", "secret", "token", "password", "config", "value",
+    "data", "user", "name", "code", "file", "test", "sample", "example",
+    "dummy", "fake", "here", "insert", "replace", "change", "please",
+    "hello", "world", "request", "response", "session", "client", "server",
+}
 
 def has_dictionary_words(s: str) -> bool:
     """Rough heuristic: 3+ separate alphabetic runs of 3+ chars suggests
     human-typed words rather than one unbroken random blob."""
-    words = re.findall(r"[a-zA-Z]{3,}", s)
-    return len(words) >= 3
+    runs = re.findall(r"[a-zA-Z]{3,}", s.lower())
+    real_words = [w for w in runs if w in COMMON_ENGLISH_WORDS]
+    return len(real_words) >= 1
 
 
 def has_placeholder_keyword(s: str) -> bool:
