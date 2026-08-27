@@ -1,0 +1,16 @@
+[
+  {"RuleID": "aws-access-token", "File": "infra/terraform/secrets.tfvars", "StartLine": 12,
+   "Secret": "AKIAV3F9K2L8P0QZX7RT", "Match": "aws_secret_access_key = \"AKIAV3F9K2L8P0QZX7RT\""},
+  {"RuleID": "generic-api-key", "File": "src/test/java/AuthTest.java", "StartLine": 44,
+   "Secret": "test_9f8a7d6c5b4a3f2e1d0c9b8a7f6e5d4c_fixture", "Match": "String API_KEY = \"test_9f8a7d6c5b4a3f2e1d0c9b8a7f6e5d4c_fixture\";"},
+  {"RuleID": "generic-high-entropy-string", "File": "package-lock.json", "StartLine": 1053,
+   "Secret": "sha512-K7f9a1b2c3d4e5f60718293a4b5c6d7e8f9012a3b4c5d6e7f8091a2b3c4d5e6f", "Match": "\"integrity\": \"sha512-K7f9a1b2c3d4e5f60718293a4b5c6d7e8f9012a3b4c5d6e7f8091a2b3c4d5e6f\""},
+  {"RuleID": "generic-api-key", "File": "docs/examples/quickstart.md", "StartLine": 8,
+   "Secret": "your_api_key_here", "Match": "export API_KEY=your_api_key_here"},
+  {"RuleID": "github-pat", "File": ".github/workflows/deploy.yml", "StartLine": 27,
+   "Secret": "ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nOp", "Match": "GITHUB_TOKEN: ghp_9kLmQ2vT7xR4wY1nB6cD3eF8gH0jK5lM2nOp"},
+  {"RuleID": "stripe-live-key", "File": "app/settings/prod.py", "StartLine": 5,
+   "Secret": "sk_live_QwErTy9uIoP8aSdFgHjKl0Zx", "Match": "STRIPE_SECRET_KEY = \"sk_live_QwErTy9uIoP8aSdFgHjKl0Zx\""},
+  {"RuleID": "generic-high-entropy-string", "File": "spec/support/fixtures.rb", "StartLine": 19,
+   "Secret": "550e8400-e29b-41d4-a716-446655440000", "Match": "request_id = \"550e8400-e29b-41d4-a716-446655440000\""}
+]
